@@ -1,0 +1,51 @@
+MIT License
+
+Copyright (c) 2025 SignToMe Team - AWS Breaking Barriers Hackathon
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+---
+
+## Additional Licenses and Attributions
+
+### AWS SDK
+This project uses AWS SDK for Python (Boto3) and AWS SDK for JavaScript, which are licensed under the Apache License 2.0.
+
+### React and Next.js
+This project uses React and Next.js, which are licensed under the MIT License.
+
+### Material-UI
+This project uses Material-UI components, which are licensed under the MIT License.
+
+### OpenCV
+This project uses OpenCV for computer vision processing, which is licensed under the Apache License 2.0.
+
+### AWS Services
+This project integrates with various AWS services including Amazon Bedrock, AWS Lambda, AWS IoT Core, and Amazon S3. Use of these services is subject to the AWS Customer Agreement and service-specific terms.
+
+### Anthropic Claude
+This project uses Anthropic's Claude AI models through Amazon Bedrock. Use is subject to Anthropic's Acceptable Use Policy and AWS Bedrock terms of service.
+
+---
+
+## Attribution Notice
+
+This project was developed for the AWS Breaking Barriers Virtual Challenge 2025. The goal is to demonstrate how AWS generative AI services can be combined with edge computing to create meaningful accessibility solutions.
+
+SignToMe aims to break communication barriers for the deaf and hard-of-hearing community through real-time sign language interpretation technology.

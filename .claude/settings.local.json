@@ -1,0 +1,36 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(aws ec2 describe-instances:*)",
+      "Bash(aws rds describe-db-instances:*)",
+      "Bash(aws elbv2 describe-load-balancers:*)",
+      "Bash(aws lambda list-functions:*)",
+      "Bash(aws:*)",
+      "Bash(curl:*)",
+      "Bash(python3:*)",
+      "Bash(export:*)",
+      "WebFetch(domain:aws-breaking-barriers.devpost.com)",
+      "WebFetch(domain:aws-breaking-barriers.devpost.com)",
+      "Bash(mkdir:*)",
+      "Bash(npm install)",
+      "Bash(pip3 install:*)",
+      "Bash(source:*)",
+      "Bash(pip install:*)",
+      "Bash(npx cdk:*)",
+      "Bash(npm install:*)",
+      "Bash(npm run build:*)",
+      "Bash(chmod:*)",
+      "Bash(./quick_test.sh:*)",
+      "Bash(find:*)",
+      "Bash(ls:*)",
+      "Bash(npm run dev:*)",
+      "Bash(pkill:*)",
+      "Bash(rm:*)",
+      "Bash(mv:*)",
+      "Bash(cat:*)",
+      "Bash(grep:*)",
+      "Bash(/mnt/c/Users/sghar/CascadeProjects/signtome/deploy-apprunner.sh)"
+    ],
+    "deny": []
+  }
+}

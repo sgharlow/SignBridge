@@ -1,0 +1,599 @@
+{
+ "Resources": {
+  "SignToMeDataBucket668FF934": {
+   "Type": "AWS::S3::Bucket",
+   "Properties": {
+    "BucketName": "signtome-data-461293170793",
+    "CorsConfiguration": {
+     "CorsRules": [
+      {
+       "AllowedHeaders": [
+        "*"
+       ],
+       "AllowedMethods": [
+        "GET",
+        "POST"
+       ],
+       "AllowedOrigins": [
+        "*"
+       ]
+      }
+     ]
+    }
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "SignToMeStack/SignToMeDataBucket/Resource"
+   }
+  },
+  "SignToMeLambdaRoleD55C45B3": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "lambda.amazonaws.com"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "ManagedPolicyArns": [
+     {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+       ]
+      ]
+     }
+    ],
+    "Policies": [
+     {
+      "PolicyDocument": {
+       "Statement": [
+        {
+         "Action": [
+          "bedrock:InvokeModel",
+          "bedrock:InvokeModelWithResponseStream"
+         ],
+         "Effect": "Allow",
+         "Resource": "*"
+        }
+       ],
+       "Version": "2012-10-17"
+      },
+      "PolicyName": "BedrockAccess"
+     },
+     {
+      "PolicyDocument": {
+       "Statement": [
+        {
+         "Action": [
+          "s3:GetObject",
+          "s3:PutObject"
+         ],
+         "Effect": "Allow",
+         "Resource": {
+          "Fn::Join": [
+           "",
+           [
+            {
+             "Fn::GetAtt": [
+              "SignToMeDataBucket668FF934",
+              "Arn"
+             ]
+            },
+            "/*"
+           ]
+          ]
+         }
+        }
+       ],
+       "Version": "2012-10-17"
+      },
+      "PolicyName": "S3Access"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "SignToMeStack/SignToMeLambdaRole/Resource"
+   }
+  },
+  "SignProcessorFunctionB88A65F7": {
+   "Type": "AWS::Lambda::Function",
+   "Properties": {
+    "Code": {
+     "S3Bucket": "cdk-hnb659fds-assets-461293170793-us-east-1",
+     "S3Key": "5bd60fc130b443c98dabf49307ba2a49473d77c145e0a722a3ebe17b1424b646.zip"
+    },
+    "Environment": {
+     "Variables": {
+      "BEDROCK_REGION": "us-east-1",
+      "DATA_BUCKET": {
+       "Ref": "SignToMeDataBucket668FF934"
+      }
+     }
+    },
+    "Handler": "handler.process_sign",
+    "Role": {
+     "Fn::GetAtt": [
+      "SignToMeLambdaRoleD55C45B3",
+      "Arn"
+     ]
+    },
+    "Runtime": "python3.9",
+    "Timeout": 30
+   },
+   "DependsOn": [
+    "SignToMeLambdaRoleD55C45B3"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "SignToMeStack/SignProcessorFunction/Resource",
+    "aws:asset:path": "asset.5bd60fc130b443c98dabf49307ba2a49473d77c145e0a722a3ebe17b1424b646",
+    "aws:asset:is-bundled": false,
+    "aws:asset:property": "Code"
+   }
+  },
+  "SignProcessorFunctionIoTInvokePermission92D3FD44": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "SignProcessorFunctionB88A65F7",
+      "Arn"
+     ]
+    },
+    "Principal": "iot.amazonaws.com",
+    "SourceArn": {
+     "Fn::GetAtt": [
+      "SignToMeIoTRule",
+      "Arn"
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "SignToMeStack/SignProcessorFunction/IoTInvokePermission"
+   }
+  },
+  "SignToMeApi686C831E": {
+   "Type": "AWS::ApiGateway::RestApi",
+   "Properties": {
+    "Description": "API for SignToMe sign language interpreter",
+    "Name": "SignToMe API"
+   },
+   "Metadata": {
+    "aws:cdk:path": "SignToMeStack/SignToMeApi/Resource"
+   }
+  },
+  "SignToMeApiCloudWatchRoleC5FF4230": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "apigateway.amazonaws.com"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "ManagedPolicyArns": [
+     {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":iam::aws:policy/service-role/AmazonAPIGatewayPushToCloudWatchLogs"
+       ]
+      ]
+     }
+    ]
+   },
+   "UpdateReplacePolicy": "Retain",
+   "DeletionPolicy": "Retain",
+   "Metadata": {
+    "aws:cdk:path": "SignToMeStack/SignToMeApi/CloudWatchRole/Resource"
+   }
+  },
+  "SignToMeApiAccountCD7A7FB9": {
+   "Type": "AWS::ApiGateway::Account",
+   "Properties": {
+    "CloudWatchRoleArn": {
+     "Fn::GetAtt": [
+      "SignToMeApiCloudWatchRoleC5FF4230",
+      "Arn"
+     ]
+    }
+   },
+   "DependsOn": [
+    "SignToMeApi686C831E"
+   ],
+   "UpdateReplacePolicy": "Retain",
+   "DeletionPolicy": "Retain",
+   "Metadata": {
+    "aws:cdk:path": "SignToMeStack/SignToMeApi/Account"
+   }
+  },
+  "SignToMeApiDeployment4B84059A5cfdc66e04e6f362c20dbe7712e80581": {
+   "Type": "AWS::ApiGateway::Deployment",
+   "Properties": {
+    "Description": "API for SignToMe sign language interpreter",
+    "RestApiId": {
+     "Ref": "SignToMeApi686C831E"
+    }
+   },
+   "DependsOn": [
+    "SignToMeApiOPTIONSC7E0D446",
+    "SignToMeApiprocessOPTIONSC32155DF",
+    "SignToMeApiprocessPOSTF4BB6ACD",
+    "SignToMeApiprocessDC05C67C"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "SignToMeStack/SignToMeApi/Deployment/Resource",
+    "aws:cdk:do-not-refactor": true
+   }
+  },
+  "SignToMeApiDeploymentStageprod3D2BBEC8": {
+   "Type": "AWS::ApiGateway::Stage",
+   "Properties": {
+    "DeploymentId": {
+     "Ref": "SignToMeApiDeployment4B84059A5cfdc66e04e6f362c20dbe7712e80581"
+    },
+    "RestApiId": {
+     "Ref": "SignToMeApi686C831E"
+    },
+    "StageName": "prod"
+   },
+   "DependsOn": [
+    "SignToMeApiAccountCD7A7FB9"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "SignToMeStack/SignToMeApi/DeploymentStage.prod/Resource"
+   }
+  },
+  "SignToMeApiOPTIONSC7E0D446": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "ApiKeyRequired": false,
+    "AuthorizationType": "NONE",
+    "HttpMethod": "OPTIONS",
+    "Integration": {
+     "IntegrationResponses": [
+      {
+       "ResponseParameters": {
+        "method.response.header.Access-Control-Allow-Headers": "'Content-Type,Authorization'",
+        "method.response.header.Access-Control-Allow-Origin": "'*'",
+        "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,GET,PUT,POST,DELETE,PATCH,HEAD'"
+       },
+       "StatusCode": "204"
+      }
+     ],
+     "RequestTemplates": {
+      "application/json": "{ statusCode: 200 }"
+     },
+     "Type": "MOCK"
+    },
+    "MethodResponses": [
+     {
+      "ResponseParameters": {
+       "method.response.header.Access-Control-Allow-Headers": true,
+       "method.response.header.Access-Control-Allow-Origin": true,
+       "method.response.header.Access-Control-Allow-Methods": true
+      },
+      "StatusCode": "204"
+     }
+    ],
+    "ResourceId": {
+     "Fn::GetAtt": [
+      "SignToMeApi686C831E",
+      "RootResourceId"
+     ]
+    },
+    "RestApiId": {
+     "Ref": "SignToMeApi686C831E"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "SignToMeStack/SignToMeApi/Default/OPTIONS/Resource"
+   }
+  },
+  "SignToMeApiprocessDC05C67C": {
+   "Type": "AWS::ApiGateway::Resource",
+   "Properties": {
+    "ParentId": {
+     "Fn::GetAtt": [
+      "SignToMeApi686C831E",
+      "RootResourceId"
+     ]
+    },
+    "PathPart": "process",
+    "RestApiId": {
+     "Ref": "SignToMeApi686C831E"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "SignToMeStack/SignToMeApi/Default/process/Resource"
+   }
+  },
+  "SignToMeApiprocessOPTIONSC32155DF": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "ApiKeyRequired": false,
+    "AuthorizationType": "NONE",
+    "HttpMethod": "OPTIONS",
+    "Integration": {
+     "IntegrationResponses": [
+      {
+       "ResponseParameters": {
+        "method.response.header.Access-Control-Allow-Headers": "'Content-Type,Authorization'",
+        "method.response.header.Access-Control-Allow-Origin": "'*'",
+        "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,GET,PUT,POST,DELETE,PATCH,HEAD'"
+       },
+       "StatusCode": "204"
+      }
+     ],
+     "RequestTemplates": {
+      "application/json": "{ statusCode: 200 }"
+     },
+     "Type": "MOCK"
+    },
+    "MethodResponses": [
+     {
+      "ResponseParameters": {
+       "method.response.header.Access-Control-Allow-Headers": true,
+       "method.response.header.Access-Control-Allow-Origin": true,
+       "method.response.header.Access-Control-Allow-Methods": true
+      },
+      "StatusCode": "204"
+     }
+    ],
+    "ResourceId": {
+     "Ref": "SignToMeApiprocessDC05C67C"
+    },
+    "RestApiId": {
+     "Ref": "SignToMeApi686C831E"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "SignToMeStack/SignToMeApi/Default/process/OPTIONS/Resource"
+   }
+  },
+  "SignToMeApiprocessPOSTApiPermissionSignToMeStackSignToMeApiDA5B55F6POSTprocess7B7BCD7A": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "SignProcessorFunctionB88A65F7",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:aws:execute-api:us-east-1:461293170793:",
+       {
+        "Ref": "SignToMeApi686C831E"
+       },
+       "/",
+       {
+        "Ref": "SignToMeApiDeploymentStageprod3D2BBEC8"
+       },
+       "/POST/process"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "SignToMeStack/SignToMeApi/Default/process/POST/ApiPermission.SignToMeStackSignToMeApiDA5B55F6.POST..process"
+   }
+  },
+  "SignToMeApiprocessPOSTApiPermissionTestSignToMeStackSignToMeApiDA5B55F6POSTprocess339E5CE9": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "SignProcessorFunctionB88A65F7",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:aws:execute-api:us-east-1:461293170793:",
+       {
+        "Ref": "SignToMeApi686C831E"
+       },
+       "/test-invoke-stage/POST/process"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "SignToMeStack/SignToMeApi/Default/process/POST/ApiPermission.Test.SignToMeStackSignToMeApiDA5B55F6.POST..process"
+   }
+  },
+  "SignToMeApiprocessPOSTF4BB6ACD": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "AuthorizationType": "NONE",
+    "HttpMethod": "POST",
+    "Integration": {
+     "IntegrationHttpMethod": "POST",
+     "Type": "AWS_PROXY",
+     "Uri": {
+      "Fn::Join": [
+       "",
+       [
+        "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/",
+        {
+         "Fn::GetAtt": [
+          "SignProcessorFunctionB88A65F7",
+          "Arn"
+         ]
+        },
+        "/invocations"
+       ]
+      ]
+     }
+    },
+    "ResourceId": {
+     "Ref": "SignToMeApiprocessDC05C67C"
+    },
+    "RestApiId": {
+     "Ref": "SignToMeApi686C831E"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "SignToMeStack/SignToMeApi/Default/process/POST/Resource"
+   }
+  },
+  "SignToMeIoTRule": {
+   "Type": "AWS::IoT::TopicRule",
+   "Properties": {
+    "RuleName": "SignToMeProcessingRule",
+    "TopicRulePayload": {
+     "Actions": [
+      {
+       "Lambda": {
+        "FunctionArn": {
+         "Fn::GetAtt": [
+          "SignProcessorFunctionB88A65F7",
+          "Arn"
+         ]
+        }
+       }
+      }
+     ],
+     "Sql": "SELECT * FROM 'signtome/frames'"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "SignToMeStack/SignToMeIoTRule"
+   }
+  },
+  "CDKMetadata": {
+   "Type": "AWS::CDK::Metadata",
+   "Properties": {
+    "Analytics": "v2:deflate64:H4sIAAAAAAAA/02PQU/DMAyFf8vuqVm7yzh2IG4I1HGfstQUr21S1Q7TFPW/k7QFdnqf/WLnuYBiW8B2o6+cmbrNOjpDOIo2rYqtU+AdhIM3LYp6+rQrLXLQjJMi3UOoXIfJTzqpTvfnWkN48dYIOZuce37HsSfmWE2KdyfNjMJQJlF6oEYLXvUtbkWWcqB58T+WxjhvRT3j0Llbj3ZOdlfF9M2cZoE46vxoMMVVryhfrk7mSr/u+snM8SgnEBsfbiBT+XTT37s5ZtpMtklDb14GL5Oyrka48MN3vof8EfLNhYmyMSalHqFa9AcmyOyDbgEAAA=="
+   },
+   "Metadata": {
+    "aws:cdk:path": "SignToMeStack/CDKMetadata/Default"
+   }
+  }
+ },
+ "Outputs": {
+  "SignToMeApiEndpoint000989A9": {
+   "Value": {
+    "Fn::Join": [
+     "",
+     [
+      "https://",
+      {
+       "Ref": "SignToMeApi686C831E"
+      },
+      ".execute-api.us-east-1.",
+      {
+       "Ref": "AWS::URLSuffix"
+      },
+      "/",
+      {
+       "Ref": "SignToMeApiDeploymentStageprod3D2BBEC8"
+      },
+      "/"
+     ]
+    ]
+   }
+  },
+  "ApiEndpoint": {
+   "Description": "API Gateway endpoint URL",
+   "Value": {
+    "Fn::Join": [
+     "",
+     [
+      "https://",
+      {
+       "Ref": "SignToMeApi686C831E"
+      },
+      ".execute-api.us-east-1.",
+      {
+       "Ref": "AWS::URLSuffix"
+      },
+      "/",
+      {
+       "Ref": "SignToMeApiDeploymentStageprod3D2BBEC8"
+      },
+      "/"
+     ]
+    ]
+   }
+  },
+  "LambdaFunction": {
+   "Description": "Sign processor Lambda function name",
+   "Value": {
+    "Ref": "SignProcessorFunctionB88A65F7"
+   }
+  },
+  "DataBucket": {
+   "Description": "S3 bucket for data storage",
+   "Value": {
+    "Ref": "SignToMeDataBucket668FF934"
+   }
+  }
+ },
+ "Parameters": {
+  "BootstrapVersion": {
+   "Type": "AWS::SSM::Parameter::Value<String>",
+   "Default": "/cdk-bootstrap/hnb659fds/version",
+   "Description": "Version of the CDK Bootstrap resources in this environment, automatically retrieved from SSM Parameter Store. [cdk:skip]"
+  }
+ },
+ "Rules": {
+  "CheckBootstrapVersion": {
+   "Assertions": [
+    {
+     "Assert": {
+      "Fn::Not": [
+       {
+        "Fn::Contains": [
+         [
+          "1",
+          "2",
+          "3",
+          "4",
+          "5"
+         ],
+         {
+          "Ref": "BootstrapVersion"
+         }
+        ]
+       }
+      ]
+     },
+     "AssertDescription": "CDK bootstrap stack version 6 required. Please run 'cdk bootstrap' with a recent version of the CDK CLI."
+    }
+   ]
+  }
+ }
+}

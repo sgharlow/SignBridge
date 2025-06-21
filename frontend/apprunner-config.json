@@ -1,0 +1,43 @@
+{
+  "ServiceName": "signbridge-frontend",
+  "SourceConfiguration": {
+    "AutoDeploymentsEnabled": false,
+    "CodeRepository": {
+      "RepositoryUrl": "https://github.com/your-username/signbridge",
+      "SourceCodeVersion": {
+        "Type": "BRANCH",
+        "Value": "main"
+      },
+      "CodeConfiguration": {
+        "ConfigurationSource": "REPOSITORY",
+        "CodeConfigurationValues": {
+          "Runtime": "NODEJS_18",
+          "BuildCommand": "npm ci && npm run build",
+          "StartCommand": "npm start",
+          "RuntimeEnvironmentVariables": {
+            "NODE_ENV": "production",
+            "NEXT_PUBLIC_API_ENDPOINT": "https://6ddpddg0g3.execute-api.us-east-1.amazonaws.com/prod/process"
+          }
+        }
+      }
+    }
+  },
+  "InstanceConfiguration": {
+    "Cpu": "0.25 vCPU",
+    "Memory": "0.5 GB"
+  },
+  "Tags": [
+    {
+      "Key": "Project",
+      "Value": "SignBridge"
+    },
+    {
+      "Key": "Environment",
+      "Value": "Production"
+    },
+    {
+      "Key": "Hackathon",
+      "Value": "AWS-Breaking-Barriers-2025"
+    }
+  ]
+}

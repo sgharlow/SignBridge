@@ -1,0 +1,4 @@
+opencv-python>=4.5.0
+numpy>=1.21.0
+awsiotsdk>=1.11.0
+awscrt>=0.13.0

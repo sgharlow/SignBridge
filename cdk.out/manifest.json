@@ -1,0 +1,186 @@
+{
+  "version": "44.0.0",
+  "artifacts": {
+    "SignToMeStack.assets": {
+      "type": "cdk:asset-manifest",
+      "properties": {
+        "file": "SignToMeStack.assets.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+      }
+    },
+    "SignToMeStack": {
+      "type": "aws:cloudformation:stack",
+      "environment": "aws://461293170793/us-east-1",
+      "properties": {
+        "templateFile": "SignToMeStack.template.json",
+        "terminationProtection": false,
+        "validateOnSynth": false,
+        "assumeRoleArn": "arn:${AWS::Partition}:iam::461293170793:role/cdk-hnb659fds-deploy-role-461293170793-us-east-1",
+        "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::461293170793:role/cdk-hnb659fds-cfn-exec-role-461293170793-us-east-1",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-461293170793-us-east-1/42f5aced92cadd003976b9696cc27803e37dfd6d7c70ab2c4177e633ef0d79db.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
+        "additionalDependencies": [
+          "SignToMeStack.assets"
+        ],
+        "lookupRole": {
+          "arn": "arn:${AWS::Partition}:iam::461293170793:role/cdk-hnb659fds-lookup-role-461293170793-us-east-1",
+          "requiresBootstrapStackVersion": 8,
+          "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+        }
+      },
+      "dependencies": [
+        "SignToMeStack.assets"
+      ],
+      "metadata": {
+        "/SignToMeStack/SignToMeDataBucket/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SignToMeDataBucket668FF934"
+          }
+        ],
+        "/SignToMeStack/SignToMeLambdaRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SignToMeLambdaRoleD55C45B3"
+          }
+        ],
+        "/SignToMeStack/SignProcessorFunction/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SignProcessorFunctionB88A65F7"
+          }
+        ],
+        "/SignToMeStack/SignProcessorFunction/IoTInvokePermission": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SignProcessorFunctionIoTInvokePermission92D3FD44"
+          }
+        ],
+        "/SignToMeStack/SignToMeApi/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SignToMeApi686C831E"
+          }
+        ],
+        "/SignToMeStack/SignToMeApi/CloudWatchRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SignToMeApiCloudWatchRoleC5FF4230"
+          }
+        ],
+        "/SignToMeStack/SignToMeApi/Account": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SignToMeApiAccountCD7A7FB9"
+          }
+        ],
+        "/SignToMeStack/SignToMeApi/Deployment/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SignToMeApiDeployment4B84059A5cfdc66e04e6f362c20dbe7712e80581"
+          }
+        ],
+        "/SignToMeStack/SignToMeApi/DeploymentStage.prod/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SignToMeApiDeploymentStageprod3D2BBEC8"
+          }
+        ],
+        "/SignToMeStack/SignToMeApi/Endpoint": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SignToMeApiEndpoint000989A9"
+          }
+        ],
+        "/SignToMeStack/SignToMeApi/Default/OPTIONS/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SignToMeApiOPTIONSC7E0D446"
+          }
+        ],
+        "/SignToMeStack/SignToMeApi/Default/process/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SignToMeApiprocessDC05C67C"
+          }
+        ],
+        "/SignToMeStack/SignToMeApi/Default/process/OPTIONS/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SignToMeApiprocessOPTIONSC32155DF"
+          }
+        ],
+        "/SignToMeStack/SignToMeApi/Default/process/POST/ApiPermission.SignToMeStackSignToMeApiDA5B55F6.POST..process": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SignToMeApiprocessPOSTApiPermissionSignToMeStackSignToMeApiDA5B55F6POSTprocess7B7BCD7A"
+          }
+        ],
+        "/SignToMeStack/SignToMeApi/Default/process/POST/ApiPermission.Test.SignToMeStackSignToMeApiDA5B55F6.POST..process": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SignToMeApiprocessPOSTApiPermissionTestSignToMeStackSignToMeApiDA5B55F6POSTprocess339E5CE9"
+          }
+        ],
+        "/SignToMeStack/SignToMeApi/Default/process/POST/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SignToMeApiprocessPOSTF4BB6ACD"
+          }
+        ],
+        "/SignToMeStack/SignToMeIoTRule": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SignToMeIoTRule"
+          }
+        ],
+        "/SignToMeStack/ApiEndpoint": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApiEndpoint"
+          }
+        ],
+        "/SignToMeStack/LambdaFunction": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "LambdaFunction"
+          }
+        ],
+        "/SignToMeStack/DataBucket": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "DataBucket"
+          }
+        ],
+        "/SignToMeStack/CDKMetadata/Default": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CDKMetadata"
+          }
+        ],
+        "/SignToMeStack/BootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BootstrapVersion"
+          }
+        ],
+        "/SignToMeStack/CheckBootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CheckBootstrapVersion"
+          }
+        ]
+      },
+      "displayName": "SignToMeStack"
+    },
+    "Tree": {
+      "type": "cdk:tree",
+      "properties": {
+        "file": "tree.json"
+      }
+    }
+  },
+  "minimumCliVersion": "2.1019.1"
+}

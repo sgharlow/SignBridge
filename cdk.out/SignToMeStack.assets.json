@@ -1,0 +1,36 @@
+{
+  "version": "44.0.0",
+  "files": {
+    "5bd60fc130b443c98dabf49307ba2a49473d77c145e0a722a3ebe17b1424b646": {
+      "displayName": "SignProcessorFunction/Code",
+      "source": {
+        "path": "asset.5bd60fc130b443c98dabf49307ba2a49473d77c145e0a722a3ebe17b1424b646",
+        "packaging": "zip"
+      },
+      "destinations": {
+        "461293170793-us-east-1": {
+          "bucketName": "cdk-hnb659fds-assets-461293170793-us-east-1",
+          "objectKey": "5bd60fc130b443c98dabf49307ba2a49473d77c145e0a722a3ebe17b1424b646.zip",
+          "region": "us-east-1",
+          "assumeRoleArn": "arn:${AWS::Partition}:iam::461293170793:role/cdk-hnb659fds-file-publishing-role-461293170793-us-east-1"
+        }
+      }
+    },
+    "42f5aced92cadd003976b9696cc27803e37dfd6d7c70ab2c4177e633ef0d79db": {
+      "displayName": "SignToMeStack Template",
+      "source": {
+        "path": "SignToMeStack.template.json",
+        "packaging": "file"
+      },
+      "destinations": {
+        "461293170793-us-east-1": {
+          "bucketName": "cdk-hnb659fds-assets-461293170793-us-east-1",
+          "objectKey": "42f5aced92cadd003976b9696cc27803e37dfd6d7c70ab2c4177e633ef0d79db.json",
+          "region": "us-east-1",
+          "assumeRoleArn": "arn:${AWS::Partition}:iam::461293170793:role/cdk-hnb659fds-file-publishing-role-461293170793-us-east-1"
+        }
+      }
+    }
+  },
+  "dockerImages": {}
+}

@@ -1,0 +1,18 @@
+Edge‑based Sign‑Language Interpreter
+Why top‑ranked: High impact on accessibility; clean UI; uses real-time inferencing at edge devices with 5G.
+
+Stream live video from mobile/edge device → Bedrock for frame-level sign detection → display text/audio.
+
+Use AWS IoT + Greengrass for edge processing; AWS Q for translation if needed.
+
+Scaffold: minimal frontend + Bedrock integration + and mock IoT/edge stream via local sim/device
+
+Implement end-to-end flow: demo at least one real-time interaction
+
+Build a clean web UI
+
+Deploy minimal backend on AWS
+
+Provide an outline and plan for filming a 4–5 min demo video
+
+Prepare a 2 page write-up that includes the problem, architecture, and impact of this project.

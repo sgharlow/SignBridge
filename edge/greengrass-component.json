@@ -1,0 +1,45 @@
+{
+  "RecipeFormatVersion": "2020-01-25",
+  "ComponentName": "com.signtome.video.processor",
+  "ComponentVersion": "1.0.0",
+  "ComponentDescription": "SignToMe video processing component for edge devices",
+  "ComponentPublisher": "SignToMe Team",
+  "ComponentConfiguration": {
+    "DefaultConfiguration": {
+      "camera_device": "/dev/video0",
+      "frame_rate": 10,
+      "resolution": "640x480",
+      "processing_interval": 0.5,
+      "mqtt_topic": "signtome/frames",
+      "iot_endpoint": "${aws:iot:endpoint}",
+      "aws_region": "${aws:region}"
+    }
+  },
+  "Manifests": [
+    {
+      "Platform": {
+        "os": "linux"
+      },
+      "Lifecycle": {
+        "install": {
+          "Script": "pip3 install -r requirements.txt"
+        },
+        "run": {
+          "Script": "python3 video_processor.py"
+        }
+      },
+      "Artifacts": [
+        {
+          "URI": "s3://${artifacts_bucket}/video_processor.py",
+          "Digest": "sha256:placeholder",
+          "Algorithm": "SHA256"
+        },
+        {
+          "URI": "s3://${artifacts_bucket}/requirements.txt",
+          "Digest": "sha256:placeholder", 
+          "Algorithm": "SHA256"
+        }
+      ]
+    }
+  ]
+}
